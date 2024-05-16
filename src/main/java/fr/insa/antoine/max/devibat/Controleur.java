@@ -9,10 +9,7 @@ import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
-/**
- *
- * @author laelt
- */
+
 public class Controleur {
     
     private MainPane vue;
