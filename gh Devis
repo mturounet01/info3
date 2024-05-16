@@ -1,0 +1,28 @@
+Devis Batiment : gh
+
+Longueur : 300.0 m
+Largeur : 300.0 m
+Hauteur : 2.0 m
+
+Etage 0 (HSP : 2.0 m) :
+  Piece 1:
+    Mur 1 (Aucun) : 0.0€
+    Mur 2 (Aucun) : 0.0€
+    Mur 3 (Carrelage 49.75€/m²) : 1102.62€
+        Nombre de porte : 1
+        Nombre de fenetre : 2
+    Mur 4 (Aucun) : 0.0€
+    Sol (Parquet 46.36€/m²) : 10113.89€
+    Plafond (Aucun) : 0.0€
+
+  Piece 2:
+    Mur 1 (Aucun) : 0.0€
+    Mur 2 (Aucun) : 0.0€
+    Mur 3 (Aucun) : 0.0€
+    Mur 4 (Aucun) : 0.0€
+    Sol (Carrelage 49.75€/m²) : 11299.21€
+    Plafond (Lambris 50.6€/m²) : 11492.27€
+
+
+
+Prix total du bâtiment : 34007.97€
