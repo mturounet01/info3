@@ -54,25 +54,29 @@ public class MainPane extends BorderPane{
         this.Vu_Dessin_Bat = new Vu_Dessin_Bat(this);
         this.Vu_Etage = new Vu_Etage(this);
         this.Vu_Menu = new Vu_Menu(this);
-
+//ajuste la taille du batiment selon les valeur entrées précedemment
         this.getVu_Etage().getcZoneDessin().getCanvas().setHeight(this.Batiment.getLongueur());
         this.getVu_Etage().getcZoneDessin().getCanvas().setWidth(this.Batiment.getLargeur());
         
-        this.setLeft(this.Vu_Menu);
-        GridPane GP = new GridPane();
-        GP.add(this.Vu_Dessin_Bat, 0, 0);
-        GP.setAlignment(Pos.CENTER);
-        this.setCenter(GP);
-        this.setRight(this.Vu_Etage);
+       this.setLeft(this.Vu_Dessin_Bat);
+       //organisation des pièces
+
+BorderPane rightPane = new BorderPane();
+rightPane.setTop(this.Vu_Menu);
+rightPane.setCenter(this.Vu_Etage);
+
+this.setRight(rightPane);
+
         
         this.Vu_Etage.getcZoneDessin().redrawAll();
     }
+   // lorsqu'on change de niveau on actualise les champs 
     public void ReConstruction(){
         this.etage = this.Batiment.getListe_Etage().get(0);
         this.Vu_Dessin_Bat = new Vu_Dessin_Bat(this);
         this.Vu_Etage = new Vu_Etage(this);
         this.Vu_Menu = new Vu_Menu(this);
-
+//ajuste la taille du batiment selon les valeur entrées précedemment
         this.getVu_Etage().getcZoneDessin().getCanvas().setHeight(this.Batiment.getLongueur());
         this.getVu_Etage().getcZoneDessin().getCanvas().setWidth(this.Batiment.getLargeur());
         
@@ -101,18 +105,18 @@ public class MainPane extends BorderPane{
     public void setEtage (Etage nv_etage){
         this.etage = nv_etage;
     }
-    
+    //met à jour la couleur des pieces lorsqu'il y a un revetement
     public void ResetCouleur(){
         for (Piece p : this.getEtage().getListe_Piece()){
             for (Mur m : p.getListe_Mur()){
                 if (m.getRevetement()!=null){
-                    m.setColor(Color.GREEN);
+                    m.setColor(Color.AZURE);
                 }else{
                     m.setColor(Color.BLACK);
                 }
             }
                     if (p.getSol().getRevetement() != null && p.getPlafond().getRevetement() != null){
-                        p.setCouleurFond(Color.AZURE);
+                        p.setCouleurFond(Color.MAGENTA);
                     }else{
                         p.setCouleurFond(Color.TRANSPARENT);
                     }
