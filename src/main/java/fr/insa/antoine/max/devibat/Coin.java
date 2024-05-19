@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author laelt
+ * @author maxt
  */
 
 public class Coin implements Serializable{

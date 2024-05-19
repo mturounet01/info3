@@ -3,6 +3,8 @@ package fr.insa.antoine.max.devibat;
 import fr.insa.antoine.max.devibat.Batiment;
 import java.io.*;
 
+
+//constructeur
 public class Sauvegarde {
     private String fichierSauvegarde;
 

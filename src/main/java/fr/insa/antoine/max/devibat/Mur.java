@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 /**
  *
  * @author laelt
@@ -19,7 +20,7 @@ public class Mur implements Serializable{
     private Coin debut, fin;
     private double longueur;
     private double surface;
-    private Pourmur Revetement;
+    private Revetmur Revetement;
     private transient Color couleur;
     private Couleur color;
     private Etage etage;
@@ -42,12 +43,12 @@ public class Mur implements Serializable{
         this.color = new Couleur(this.couleur.getRed(), this.couleur.getGreen(), this.couleur.getBlue(), this.couleur.getOpacity());
     }
     
-    //GETTERS
+    //GETTERS permet de recup les valeurs des attributs
     public Coin getDebut() {return this.debut;}
     public Coin getFin() {return this.fin;}
     public double getLongueur(){return Math.sqrt(Math.pow(this.fin.getX()-this.debut.getX(), 2)+Math.pow(this.fin.getY()-this.debut.getY(), 2));}
     public double getSurface(){return this.getLongueur()*this.etage.getHauteur_sous_plafond();}
-    public Pourmur getRevetement(){return this.Revetement;}
+    public Revetmur getRevetement(){return this.Revetement;}
     public double getPrix() {return this.prix;}
     public int getNb_Porte(){return this.nbporte;}
     public int getNb_Fenetre(){return this.nbfenetre;}
@@ -55,11 +56,11 @@ public class Mur implements Serializable{
     public Color getCouleur() {return this.couleur;}
     public Couleur getColor() {return this.color;}
     
-    //SETTERS
+    //SETTERS 
     public void setDebut(Coin debut) {this.debut = debut;}
     public void setFin(Coin fin) {this.fin = fin;}
     public void setColor (Color couleur) {this.couleur = couleur;}
-    public void setRevetement (Pourmur revetement){this.Revetement = revetement;}
+    public void setRevetement (Revetmur revetement){this.Revetement = revetement;}
     public void setNb_Porte(int nb){this.nbporte = nb;}
     public void setNb_Fenetre(int nb){this.nbfenetre = nb;}
     //AUTRES METHODES
@@ -89,17 +90,29 @@ public class Mur implements Serializable{
         return up;
     }
     
-    public double Devis_Mur(){
-        if (this.Revetement == null){
-            this.prix = 0;
-        }else{
-            this.prix = ((this.getSurface()/10) - (Surface_porte * this.nbporte) - (Surface_fenetre * this.nbfenetre)) * this.Revetement.getPrixunit();
-        }
-        BigDecimal bd = new BigDecimal(this.prix);
-        bd= bd.setScale(2,BigDecimal.ROUND_DOWN);
+    public double Devis_Mur() {
+    // Vérifier si un revêtement est défini pour le mur
+    if (this.Revetement == null) {
+        // Si aucun revêtement n'est défini, le prix du mur est de 0
+        this.prix = 0;
+    } else {
+        // Calculer la surface du mur en excluant les portes et les fenêtres
+        double surfaceMur = (this.getSurface() / 10) - (Surface_porte * this.nbporte) - (Surface_fenetre * this.nbfenetre);
+        
+        // Calculer le prix du mur en fonction de sa surface et du prix unitaire du revêtement
+        double prixMur = surfaceMur * this.Revetement.getPrixunit();
+        
+        // Arrondir le prix du mur à deux décimales
+        BigDecimal bd = BigDecimal.valueOf(prixMur).setScale(2, RoundingMode.DOWN);
+        
+        // Mettre à jour le prix du mur avec le montant arrondi
         this.prix = bd.doubleValue();
-        return this.prix;
     }
+    
+    // Retourner le prix du mur
+    return this.prix;
+}
+
     
     public void Mur(Color couleur) {
         this.color = new Couleur(this.couleur.getRed(), this.couleur.getGreen(), this.couleur.getBlue(), this.couleur.getOpacity());

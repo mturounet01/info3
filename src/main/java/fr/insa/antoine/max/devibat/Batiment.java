@@ -5,9 +5,9 @@
 package fr.insa.antoine.max.devibat;
 
 import fr.insa.antoine.max.devibat.Etage;
-import fr.insa.antoine.max.devibat.Pourmur;
-import fr.insa.antoine.max.devibat.Pourplafond;
-import fr.insa.antoine.max.devibat.Poursol;
+import fr.insa.antoine.max.devibat.Revetmur;
+import fr.insa.antoine.max.devibat.Revetplafond;
+import fr.insa.antoine.max.devibat.RevetSol;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -36,9 +36,9 @@ public class Batiment implements Serializable{
     private ArrayList<String> liste_mur = new ArrayList<String>();
     private ArrayList<String> liste_plafond = new ArrayList<String>();
     private ArrayList<String> liste_sol = new ArrayList<String>();
-    private HashMap<String,Pourmur> StringToPourmur= new HashMap<String,Pourmur>();
-    private HashMap<String,Pourplafond> StringToPourplafond= new HashMap<String,Pourplafond>();
-    private HashMap<String,Poursol> StringToPoursol= new HashMap<String,Poursol>();
+    private HashMap<String,Revetmur> StringToPourmur= new HashMap<String,Revetmur>();
+    private HashMap<String,Revetplafond> StringToPourplafond= new HashMap<String,Revetplafond>();
+    private HashMap<String,RevetSol> StringToPoursol= new HashMap<String,RevetSol>();
     
     //Constructeurs
     public Batiment(){
@@ -62,9 +62,9 @@ public class Batiment implements Serializable{
     public ArrayList<String> getListe_mur() {return liste_mur;}
     public ArrayList<String> getListe_plafond() {return liste_plafond;}
     public ArrayList<String> getListe_sol() {return liste_sol;}
-    public HashMap<String,Pourmur> getStringToPourmur (){return this.StringToPourmur;}
-    public HashMap<String,Poursol> getStringToPoursol (){return this.StringToPoursol;}
-    public HashMap<String,Pourplafond> getStringToPourplafond (){return this.StringToPourplafond;}
+    public HashMap<String,Revetmur> getStringToPourmur (){return this.StringToPourmur;}
+    public HashMap<String,RevetSol> getStringToPoursol (){return this.StringToPoursol;}
+    public HashMap<String,Revetplafond> getStringToPourplafond (){return this.StringToPourplafond;}
     
     public double getPrix() {return this.prix;}
     
@@ -94,17 +94,17 @@ public class Batiment implements Serializable{
                 prixunit=Double.parseDouble(mot.nextToken());//récupérer les différentes infos
     
                 if(test_binaire(mur)){
-                    Pourmur objmur = new Pourmur(idRevetement,designation,prixunit);
+                    Revetmur objmur = new Revetmur(idRevetement,designation,prixunit);
                    this.liste_mur.add(objmur.getDesignation());
                     this.StringToPourmur.put(objmur.getDesignation(),objmur);// mettre dans les listes les objets
                 }
                 if(test_binaire(sol)){
-                    Poursol objsol = new Poursol(idRevetement,designation,prixunit);
+                    RevetSol objsol = new RevetSol(idRevetement,designation,prixunit);
                     this.liste_sol.add(objsol.getDesignation());
                     this.StringToPoursol.put(objsol.getDesignation(),objsol);
                 }
                 if(test_binaire(plafond)){
-                    Pourplafond objplafond = new Pourplafond(idRevetement,designation,prixunit);
+                    Revetplafond objplafond = new Revetplafond(idRevetement,designation,prixunit);
                     this.liste_plafond.add(objplafond.getDesignation());
                     this.StringToPourplafond.put(objplafond.getDesignation(),objplafond);
                 }

@@ -6,14 +6,15 @@ package fr.insa.antoine.max.devibat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  *
- * @author laelt
+ * @author antoinez
  */
 public class Plafond implements Serializable{
     
-    private Pourplafond Revetement;
+    private Revetplafond Revetement;
     private double Surface;
     private Piece piece;
     
@@ -26,25 +27,33 @@ public class Plafond implements Serializable{
     }
     
     //Getters
-    public Pourplafond getRevetement(){return this.Revetement;}
+    public Revetplafond getRevetement(){return this.Revetement;}
     public double getsurface(){return this.piece.getSurface();}
     public double getPrix() {return this.prix;}
     
     //Setters
-    public void setRevetement(Pourplafond revetement){
+    public void setRevetement(Revetplafond revetement){
         this.Revetement = revetement;
     }
     
     //Methode devis du Plafond
-    public double Devis_Plafond(){
-        if (this.Revetement == null){
-            this.prix = 0;
-        }else{
-            this.prix = (this.getsurface()/100) * this.getRevetement().getPrixunit();
-        }
-        BigDecimal bd = new BigDecimal(this.prix);
-        bd= bd.setScale(2,BigDecimal.ROUND_DOWN);
+    public double Devis_Plafond() {
+    // Vérifier si un revêtement est défini pour le plafond
+    if (this.Revetement == null) {
+        // Si aucun revêtement n'est défini, le prix du plafond est de 0
+        this.prix = 0;
+    } else {
+        // Calculer le prix du plafond en fonction de sa surface et du prix unitaire du revêtement
+        double prixPlafond = (this.getsurface() / 100) * this.getRevetement().getPrixunit();
+        
+        // Arrondir le prix du plafond à deux décimales
+        BigDecimal bd = BigDecimal.valueOf(prixPlafond).setScale(2, RoundingMode.DOWN);
+        
+        // Mettre à jour le prix du plafond avec le montant arrondi
         this.prix = bd.doubleValue();
-        return this.prix;
     }
+    
+    // Retourner le prix du plafond
+    return this.prix;
+}
 }

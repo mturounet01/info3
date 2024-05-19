@@ -6,19 +6,20 @@ package fr.insa.antoine.max.devibat;
 
 import static java.lang.Math.abs;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 
-public class Controleur {
+public class CreerPiece {
     
-    private MainPane vue;
+    private Principal vue;
     private int etat;
     private double[] pos = new double[2];
     private ArrayList<Mur> Liste_Selection_Mur;
     private ArrayList<Piece> Liste_Selection_Piece;
     
-    public Controleur(MainPane vue){
+    public CreerPiece(Principal vue){
         this.vue = vue;
         this.Liste_Selection_Mur = new ArrayList<Mur>();
         this.Liste_Selection_Piece = new ArrayList<Piece>();
@@ -60,100 +61,142 @@ public class Controleur {
         }
     }
 
-    void clickZoneDessin(MouseEvent t) {
-        if (this.etat == 10){
-            this.pos[0] = t.getX();
-            this.pos[1] = t.getY();
-            this.changeEtat(11);
-        } else if (this.etat == 20){
-            Coin click = new Coin(t.getX(),t.getY());
-            Mur MurProche = this.vue.getEtage().MurPlusProche(click);
-            Piece PieceClick = this.vue.getEtage().PieceClick(click);
-            if (MurProche != null){
-                this.Liste_Selection_Piece.clear();
-                if (t.isShiftDown()){
-                    this.Liste_Selection_Mur.add(MurProche);
-                }else if (t.isControlDown()){
-                    if (this.Liste_Selection_Mur.contains(MurProche)){
-                        this.Liste_Selection_Mur.remove(MurProche);
-                    }else{
-                        this.Liste_Selection_Mur.add(MurProche);
-                    }
-                }else{
-                    this.Liste_Selection_Mur.clear();
-                    this.Liste_Selection_Mur.add(MurProche);
-                }
-            }else if (PieceClick != null){
-                this.Liste_Selection_Mur.clear();
-                if (t.isShiftDown()){
-                    this.Liste_Selection_Piece.add(PieceClick);
-                }else if (t.isControlDown()){
-                    if (this.Liste_Selection_Piece.contains(PieceClick)){
-                        this.Liste_Selection_Piece.remove(PieceClick);
-                    }else{
-                        this.Liste_Selection_Piece.add(PieceClick);
-                    }
-                }else{
-                    this.Liste_Selection_Piece.clear();
-                    this.Liste_Selection_Piece.add(PieceClick);
-                }
-            }else {
-                this.Liste_Selection_Mur.clear();
-                this.Liste_Selection_Piece.clear();
-                this.vue.ResetCouleur();
-            }
-            if (this.Liste_Selection_Mur.isEmpty()&&this.Liste_Selection_Piece.isEmpty()){
-                this.vue.getVu_Etage().getGp_Piece().setDisable(true);
-                this.vue.getVu_Etage().getHb_Mur().setDisable(true);
-                this.vue.getVu_Etage().getHb_Action().setDisable(true);
-                this.vue.getVu_Etage().getTf_Largeur().setText(" ");
-                this.vue.getVu_Etage().getTf_Longueur().setText(" ");
-                this.vue.getVu_Etage().getHb_Porte().setDisable(true);
-                this.vue.getVu_Etage().getHb_Fenetre().setDisable(true);
-            }else if (!this.Liste_Selection_Mur.isEmpty()){
-                this.vue.getVu_Etage().getHb_Mur().setDisable(false);
-                this.vue.getVu_Etage().getGp_Piece().setDisable(true);
-                if (this.Liste_Selection_Mur.get(0).getRevetement() == null){
-                    this.vue.getVu_Etage().getCb_Rev_Mur().setValue(" ");
-                }else {
-                    this.vue.getVu_Etage().getCb_Rev_Mur().setValue(this.Liste_Selection_Mur.get(0).getRevetement().getDesignation());
-                }
-                this.vue.getVu_Etage().getHb_Action().setDisable(false);
-                this.vue.getVu_Etage().getTf_Largeur().setText(" ");
-                this.vue.getVu_Etage().getTf_Longueur().setText(" ");
-                this.vue.getVu_Etage().getHb_Porte().setDisable(false);
-                this.vue.getVu_Etage().getHb_Fenetre().setDisable(false);
-                this.vue.getVu_Etage().getTf_Porte().setText(Integer.toString(this.Liste_Selection_Mur.get(0).getNb_Porte()));
-                this.vue.getVu_Etage().getTf_Fenetre().setText(Integer.toString(this.Liste_Selection_Mur.get(0).getNb_Fenetre()));
-            }else if (!this.Liste_Selection_Piece.isEmpty()){
-                this.vue.getVu_Etage().getHb_Mur().setDisable(true);
-                this.vue.getVu_Etage().getGp_Piece().setDisable(false);
-                this.vue.getVu_Etage().getHb_Action().setDisable(false);
-                this.vue.getVu_Etage().getTf_Largeur().setText(Double.toString(this.Liste_Selection_Piece.get(0).getLargeur()/10));
-                this.vue.getVu_Etage().getTf_Longueur().setText(Double.toString(this.Liste_Selection_Piece.get(0).getLongueur()/10));
-                if (this.Liste_Selection_Piece.get(0).getSol().getRevetement() == null){
-                    this.vue.getVu_Etage().getCb_Rev_Sol().setValue(" ");
-                }else {
-                    this.vue.getVu_Etage().getCb_Rev_Sol().setValue(this.Liste_Selection_Piece.get(0).getSol().getRevetement().getDesignation());
-                }
-                if (this.Liste_Selection_Piece.get(0).getPlafond().getRevetement() == null){
-                    this.vue.getVu_Etage().getCb_Rev_Plafond().setValue(" ");
-                }else {
-                    this.vue.getVu_Etage().getCb_Rev_Plafond().setValue(this.Liste_Selection_Piece.get(0).getPlafond().getRevetement().getDesignation());
-                }
-                this.vue.getVu_Etage().getHb_Porte().setDisable(true);
-                this.vue.getVu_Etage().getHb_Fenetre().setDisable(true);
-            }
-            this.vue.ResetCouleur();
-            for (Mur m : Liste_Selection_Mur){
-                m.setColor(Color.ORANGE);
-            }
-            for (Piece p : Liste_Selection_Piece){
-                p.setCouleurFond(Color.PINK);
-            }
-            this.vue.redrawAll();
-        }
+        void clickZoneDessin(MouseEvent t) {// un évenement de click se produit sur le dessin
+    if (this.etat == 10) {
+        handleInitialState(t);
+    } else if (this.etat == 20) {
+        handleSelectionState(t);
     }
+}
+
+private void handleInitialState(MouseEvent t) {//enregistre les coordonnées du premier click
+    this.pos[0] = t.getX();
+    this.pos[1] = t.getY();
+    this.changeEtat(11);
+}
+
+private void handleSelectionState(MouseEvent t) {
+    Coin click = new Coin(t.getX(), t.getY());
+    Mur murProche = this.vue.getEtage().MurPlusProche(click);
+    Piece pieceClick = this.vue.getEtage().PieceClick(click);
+
+    if (murProche != null) {
+        updateSelection(murProche, t.isShiftDown(), t.isControlDown(), this.Liste_Selection_Mur);
+        this.Liste_Selection_Piece.clear();
+    } else if (pieceClick != null) {// dans le cas d'une pièce 
+        updateSelection(pieceClick, t.isShiftDown(), t.isControlDown(), this.Liste_Selection_Piece);
+        this.Liste_Selection_Mur.clear();
+    } else {
+        clearSelections();
+        this.vue.ActuCouleur();
+    }
+
+    updateUI();
+    updateColors();
+    this.vue.redrawAll();
+}
+
+private <T> void updateSelection(T item, boolean isShiftDown, boolean isControlDown, List<T> selectionList) {
+    if (isShiftDown) {
+        selectionList.add(item);
+    } else if (isControlDown) {
+        if (selectionList.contains(item)) {
+            selectionList.remove(item);
+        } else {
+            selectionList.add(item);
+        }
+    } else {
+        selectionList.clear();
+        selectionList.add(item);
+    }
+}
+
+private void clearSelections() {
+    this.Liste_Selection_Mur.clear();
+    this.Liste_Selection_Piece.clear();
+}
+
+private void updateUI() {
+    boolean noSelection = this.Liste_Selection_Mur.isEmpty() && this.Liste_Selection_Piece.isEmpty();
+    boolean murSelected = !this.Liste_Selection_Mur.isEmpty();
+    boolean pieceSelected = !this.Liste_Selection_Piece.isEmpty();
+
+    if (noSelection) {
+        disableAllControls();
+    } else if (murSelected) {
+        enableMurControls();
+        disablePieceControls();
+        updateMurDetails(this.Liste_Selection_Mur.get(0));
+    } else if (pieceSelected) {
+        enablePieceControls();
+        disableMurControls();
+        updatePieceDetails(this.Liste_Selection_Piece.get(0));
+    }
+}
+
+private void disableAllControls() {
+    this.vue.getVu_Etage().getGp_Piece().setDisable(true);
+    this.vue.getVu_Etage().getHb_Mur().setDisable(true);
+    this.vue.getVu_Etage().getHb_Action().setDisable(true);
+    this.vue.getVu_Etage().getTf_Largeur().setText(" ");
+    this.vue.getVu_Etage().getTf_Longueur().setText(" ");
+    this.vue.getVu_Etage().getHb_Porte().setDisable(true);
+    this.vue.getVu_Etage().getHb_Fenetre().setDisable(true);
+}
+
+private void enableMurControls() {
+    this.vue.getVu_Etage().getHb_Mur().setDisable(false);
+    this.vue.getVu_Etage().getHb_Action().setDisable(false);
+    this.vue.getVu_Etage().getHb_Porte().setDisable(false);
+    this.vue.getVu_Etage().getHb_Fenetre().setDisable(false);
+}
+
+private void disablePieceControls() {
+    this.vue.getVu_Etage().getGp_Piece().setDisable(true);
+}
+
+private void enablePieceControls() {
+    this.vue.getVu_Etage().getGp_Piece().setDisable(false);
+    this.vue.getVu_Etage().getHb_Action().setDisable(false);
+}
+
+private void disableMurControls() {
+    this.vue.getVu_Etage().getHb_Mur().setDisable(true);
+}
+
+private void updateMurDetails(Mur mur) {
+    this.vue.getVu_Etage().getTf_Largeur().setText(" ");
+    this.vue.getVu_Etage().getTf_Longueur().setText(" ");
+    this.vue.getVu_Etage().getTf_Porte().setText(Integer.toString(mur.getNb_Porte()));
+    this.vue.getVu_Etage().getTf_Fenetre().setText(Integer.toString(mur.getNb_Fenetre()));
+
+    String revetement = (mur.getRevetement() == null) ? " " : mur.getRevetement().getDesignation();
+    this.vue.getVu_Etage().getCb_Rev_Mur().setValue(revetement);
+}
+
+private void updatePieceDetails(Piece piece) {
+    this.vue.getVu_Etage().getTf_Largeur().setText(Double.toString(piece.getLargeur() / 10));
+    this.vue.getVu_Etage().getTf_Longueur().setText(Double.toString(piece.getLongueur() / 10));
+
+    String solRevetement = (piece.getSol().getRevetement() == null) ? " " : piece.getSol().getRevetement().getDesignation();
+    this.vue.getVu_Etage().getCb_Rev_Sol().setValue(solRevetement);
+
+    String plafondRevetement = (piece.getPlafond().getRevetement() == null) ? " " : piece.getPlafond().getRevetement().getDesignation();
+    this.vue.getVu_Etage().getCb_Rev_Plafond().setValue(plafondRevetement);
+
+    this.vue.getVu_Etage().getHb_Porte().setDisable(true);
+    this.vue.getVu_Etage().getHb_Fenetre().setDisable(true);
+}
+
+private void updateColors() {
+    for (Mur mur : this.Liste_Selection_Mur) {
+        mur.setColor(Color.ORANGE);
+    }
+    for (Piece piece : this.Liste_Selection_Piece) {
+        piece.setCouleurFond(Color.PINK);
+    }
+}
+
     void traceRectangleConstruction(MouseEvent t) {
         if (this.etat == 11){
             this.vue.getEtage().add(new Piece(creationMurs(pos, t)));
@@ -237,7 +280,7 @@ public class Controleur {
                 m.setNb_Fenetre(Integer.parseInt(this.vue.getVu_Etage().getTf_Fenetre().getText()));
             }
         }
-        this.vue.ResetCouleur();
+        this.vue.ActuCouleur();
         this.vue.redrawAll();
     }
 
@@ -258,10 +301,10 @@ public class Controleur {
     
     void Click_b_Valider_Bat() {
         this.vue.Creation_Bat();
-        double largeur = 10*Double.parseDouble(this.vue.getVu_Demarrage().getVu_Nouveau_Bat().gettf_Largeur().getText());
-        double longueur = 10*Double.parseDouble(this.vue.getVu_Demarrage().getVu_Nouveau_Bat().gettf_Longueur().getText());
-        int nb_etage = Integer.parseInt(this.vue.getVu_Demarrage().getVu_Nouveau_Bat().gettf_nb_etage().getText());
-        String nom_bat = this.vue.getVu_Demarrage().getVu_Nouveau_Bat().gettf_nom_bat().getText();
+        double largeur = 10*Double.parseDouble(this.vue.getVu_Demarrage().getVu_Nouveau_Bat().getTf_Largeur().getText());
+        double longueur = 10*Double.parseDouble(this.vue.getVu_Demarrage().getVu_Nouveau_Bat().getTf_Longueur().getText());
+        int nb_etage = Integer.parseInt(this.vue.getVu_Demarrage().getVu_Nouveau_Bat().getTf_nb_etage().getText());
+        String nom_bat = this.vue.getVu_Demarrage().getVu_Nouveau_Bat().getTf_nom_bat().getText();
         this.vue.getBatiment().set_Largeur(largeur);
         this.vue.getBatiment().set_Longueur(longueur);
         this.vue.getBatiment().set_nb_niveau(nb_etage);
@@ -269,7 +312,7 @@ public class Controleur {
         this.vue.getChildren().clear();
         this.vue.Construction();
         this.changeEtat(10);
-        this.vue.getVu_Menu().set_taille_spinner(this.vue.getBatiment().getTailleListeEtage()-1);
+        this.vue.getVu_Menu().setTailleSpinner(this.vue.getBatiment().getTailleListeEtage()-1);
     }
     
      void Click_b_Devis() {
@@ -278,7 +321,7 @@ public class Controleur {
              this.vue.getVu_Menu().getl_Erreur().setText("Validez votre action");
          }else{
              this.vue.getBatiment().Devis_Batiment();
-             DevisWriter.ecrireDevis(this.vue.getBatiment());
+             Devis.ecrireDevis(this.vue.getBatiment());
              this.vue.getVu_Menu().getl_Erreur().setTextFill(Color.GREEN);
              this.vue.getVu_Menu().getl_Erreur().setText("Le Devis a été créé");
              
@@ -341,7 +384,7 @@ public ArrayList<Mur> creationMurs (double[] pos, MouseEvent t){
         this.vue.getChildren().clear();
         this.vue.ReConstruction();
         this.changeEtat(10);
-        this.vue.getVu_Menu().set_taille_spinner(this.vue.getBatiment().getTailleListeEtage()-1);
+        this.vue.getVu_Menu().setTailleSpinner(this.vue.getBatiment().getTailleListeEtage()-1);
     }
 
     void Click_b_Charger1() {

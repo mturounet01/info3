@@ -8,27 +8,27 @@ import javafx.scene.canvas.Canvas;
 
 /**
  *
- * @author laelt
+ * @author maxt
  */
-public class Vu_Dessin_Bat extends MonCanvas {
+public class FenDessin extends MonCanvas {
     
     private Canvas c_Zone_Dessin;
-    private Controleur controleur;
+    private CreerPiece creerPiece;
     
-    public Vu_Dessin_Bat(MainPane main) {
+    public FenDessin(Principal main) {
         super(main);
         this.c_Zone_Dessin = this.getCanvas();
         this.getChildren().add(c_Zone_Dessin);
-        this.controleur = this.getMain().getControleur();
+        this.creerPiece = this.getMain().getCreerPiece();
         
         this.c_Zone_Dessin.setOnMousePressed((t)->{
-            this.controleur.clickZoneDessin(t);
+            this.creerPiece.clickZoneDessin(t);
         });
         this.c_Zone_Dessin.setOnMouseDragged((t)->{
-            this.controleur.traceRectangleConstruction(t);
+            this.creerPiece.traceRectangleConstruction(t);
         });
         this.c_Zone_Dessin.setOnMouseReleased((t)->{
-            this.controleur.relacheZoneDessin(t);
+            this.creerPiece.relacheZoneDessin(t);
         });
     }
     

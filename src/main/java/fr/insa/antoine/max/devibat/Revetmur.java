@@ -6,13 +6,14 @@ package fr.insa.antoine.max.devibat;
 
 /**
  *
- * @author Elève
+ * @author maxt
+ *
  */
-public class Poursol extends Revetements {
+public class Revetmur extends Revetements{//classe fille de Revetements
 
-    public Poursol(int idRevetement, String designation, double prixunit) {
+    public Revetmur(int idRevetement, String designation, double prixunit) {
         this.idRevetement = idRevetement;
         this.designation = designation+" "+prixunit+"€/m²";
         this.prixunit = prixunit;
-    }   
+    }
 }

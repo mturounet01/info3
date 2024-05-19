@@ -28,9 +28,9 @@ import javafx.scene.paint.Color;
  *
  * @author laelt
  */
-public class Vu_Etage extends Pane {
-    private Controleur controleur; 
-    private MainPane main;
+public class FenEtage extends Pane {
+    private CreerPiece creerPiece; 
+    private Principal principal;
     private Etage etage_a_dessiner;
     
     private RadioButton rb_Dessiner = new RadioButton();
@@ -71,16 +71,16 @@ public class Vu_Etage extends Pane {
     private HBox hb_Fenetre = new HBox();
 
     
-    public Vu_Etage (MainPane main){
+    public FenEtage (Principal main){
         
-        this.main = main;
-        this.controleur = this.main.getControleur();
-        
-        ObservableList<String> ListePourMur = FXCollections.observableArrayList(this.main.getBatiment().getListe_mur());
+        this.principal = main;
+        this.creerPiece = this.principal.getCreerPiece();
+        //liste des revêtements
+        ObservableList<String> ListePourMur = FXCollections.observableArrayList(this.principal.getBatiment().getListe_mur());
         this.cb_Rev_Mur = new ChoiceBox<String>(ListePourMur);
-        ObservableList<String> ListePourSol = FXCollections.observableArrayList(this.main.getBatiment().getListe_sol());
+        ObservableList<String> ListePourSol = FXCollections.observableArrayList(this.principal.getBatiment().getListe_sol());
         this.cb_Rev_Sol = new ChoiceBox<String>(ListePourSol);
-        ObservableList<String> ListePourPlafond = FXCollections.observableArrayList(this.main.getBatiment().getListe_plafond());
+        ObservableList<String> ListePourPlafond = FXCollections.observableArrayList(this.principal.getBatiment().getListe_plafond());
         this.cb_Rev_Plafond = new ChoiceBox<String>(ListePourPlafond);
         
         this.l_MessageErreur.setTextFill(Color.RED);
@@ -89,29 +89,30 @@ public class Vu_Etage extends Pane {
         this.tf_Fenetre.setMaxWidth(40);
 
         this.b_Valider.setOnAction((t)->{
-            this.controleur.Click_b_Valider();
+            this.creerPiece.Click_b_Valider();
         });
         this.b_Supprimer.setOnAction((t)->{
-            this.controleur.Click_b_Supprimer();
+            this.creerPiece.Click_b_Supprimer();
         });
         this.b_Appliquer.setOnAction((t)->{
-            this.controleur.Click_b_Appliquer();
+            this.creerPiece.Click_b_Appliquer();
         });
-  
+  //bouton qui permet de dessiner la pièce 
         this.rb_Dessiner.setText("Dessiner");
         this.rb_Dessiner.setOnAction((t)->{
-            this.controleur.rb_Dessiner_chosit();
+            this.creerPiece.rb_Dessiner_chosit();
         });
+        //bouton qui permet de mettre des revetements
         this.rb_Selectionner.setText("Selectionner");
         this.rb_Selectionner.setOnAction((t)->{
-            this.controleur.rb_Selectionner_chosit();
+            this.creerPiece.rb_Selectionner_chosit();
         });
         ToggleGroup Group_rb = new ToggleGroup();
         this.rb_Dessiner.setToggleGroup(Group_rb);
         this.rb_Selectionner.setToggleGroup(Group_rb);
         this.rb_Dessiner.setSelected(true);
         
-        this.cZoneDessin = this.main.getVu_Dessin_Bat();
+        this.cZoneDessin = this.principal.getVu_Dessin_Bat();
         
         this.vb_Bas.setAlignment(Pos.CENTER);
         

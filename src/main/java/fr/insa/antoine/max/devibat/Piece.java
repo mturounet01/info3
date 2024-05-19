@@ -6,10 +6,11 @@ import javafx.scene.paint.Color;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  *
- * @author laelt
+ * @author antoinez
  */
 public class Piece implements Serializable{
     
@@ -53,15 +54,15 @@ public class Piece implements Serializable{
     public Color getCouleurFond() {return this.CouleurFond;}
     public Couleur getColor() {return this.color;}
     
-    //Setters
+    //Setters qui décrivent la création d'une pièce
     public void setCouleurFond (Color couleur){this.CouleurFond = couleur;}
     public void setLargeur(double nouvelle_largeur){
         double x1 = this.getCoinDepart().getX();
         double x2 = this.getCoinFin().getX();
-        if (x1<x2){
+        if (x1<x2){//cas ou le coin de fin est plus grand que celui d'arrivée
             this.getCoinFin().setX(x1+nouvelle_largeur);
             this.getCoin4().setX(x1+nouvelle_largeur);
-        }else if (x1>x2){
+        }else if (x1>x2){//cas inverse
             this.getCoinFin().setX(x1-nouvelle_largeur);
             this.getCoin4().setX(x1-nouvelle_largeur);
         }
@@ -78,62 +79,74 @@ public class Piece implements Serializable{
         }
     }
     
-    //AUTRES METHODES
+    //
     
-    public void dessiner(GraphicsContext context){
-        context.setFill(this.CouleurFond);
-        double x1 = this.getCoinDepart().getX();
-        double y1 = this.getCoinDepart().getY();
-        double x3 = this.getCoinFin().getX();
-        double y3 = this.getCoinFin().getY();
-        if ((x1<x3)&&(y1<y3)){            
-            context.fillRect(this.getCoinDepart().getX(), this.getCoinDepart().getY(), this.getLargeur(), this.getLongueur());
-        }else if ((x1<x3)&&(y1>y3)){
-            Coin CoinDepartRemplissage = this.Liste_Mur.get(1).getDebut();
-            context.fillRect(CoinDepartRemplissage.getX(), CoinDepartRemplissage.getY(), this.getLargeur(), this.getLongueur());
-        }else if ((x1>x3)&&(y1>y3)){
-            Coin CoinDepartRemplissage = this.Liste_Mur.get(2).getDebut();
-            context.fillRect(CoinDepartRemplissage.getX(), CoinDepartRemplissage.getY(), this.getLargeur(), this.getLongueur());
-        }else if ((x1>x3)&&(y1<y3)){
-            Coin CoinDepartRemplissage = this.Liste_Mur.get(3).getDebut();
-            context.fillRect(CoinDepartRemplissage.getX(), CoinDepartRemplissage.getY(), this.getLargeur(), this.getLongueur());
-        }
-        
-        for (Mur m : this.Liste_Mur){
-            m.dessiner(context);
-        }
+    public void dessiner(GraphicsContext context) {
+    context.setFill(this.CouleurFond);
+
+    // Récupérer les coins de départ et de fin
+    Coin coinDepart = this.getCoinDepart();
+    Coin coinFin = this.getCoinFin();
+
+    // Calculer les dimensions du rectangle
+    double largeur = Math.abs(coinDepart.getX() - coinFin.getX());
+    double longueur = Math.abs(coinDepart.getY() - coinFin.getY());
+    
+    // Déterminer le coin de départ pour le remplissage du rectangle
+    double x = Math.min(coinDepart.getX(), coinFin.getX());
+    double y = Math.min(coinDepart.getY(), coinFin.getY());
+
+    // Dessiner le rectangle
+    context.fillRect(x, y, largeur, longueur);
+
+    // Dessiner les murs
+    for (Mur m : this.Liste_Mur) {
+        m.dessiner(context);
     }
+}
+
       
-    public boolean ClickDansPiece(Coin c){
-        double x1 = this.getCoinDepart().getX();
-        double y1 = this.getCoinDepart().getY();
-        double x2 = this.getCoinFin().getX();
-        double y2 = this.getCoinFin().getY();
-        double x3 = c.getX();
-        double y3 = c.getY();
-        
-        if ((x1<x3 && x3<x2)||(x2<x3 && x3<x1)){
-            if((y1<y3 && y3<y2)||(y2<y3 && y3<y1)){
-                return true;
-            }else {
-                return false;
-            }
-        }else {
-            return false;
-        }
-    }
+    public boolean ClickDansPiece(Coin c) {
+    // Récupérer les coordonnées des coins de départ et de fin de la pièce
+    double x1 = this.getCoinDepart().getX();
+    double y1 = this.getCoinDepart().getY();
+    double x2 = this.getCoinFin().getX();
+    double y2 = this.getCoinFin().getY();
+    double x3 = c.getX();
+    double y3 = c.getY();
     
-    public double Devis_Piece(){
-        double prixMurs = 0;
-        for (Mur m : Liste_Mur){
-            prixMurs = prixMurs + m.Devis_Mur();
-        }
-        this.prix = prixMurs + this.sol.Devis_Sol() + this.plafond.Devis_Plafond();
-        BigDecimal bd = new BigDecimal(this.prix);
-        bd= bd.setScale(2,BigDecimal.ROUND_DOWN);
-        this.prix = bd.doubleValue();
-        return this.getPrix();
-    }
+    // Vérifier si le point se trouve entre les coordonnées x des coins de départ et de fin
+    boolean xInRange = (x1 < x3 && x3 < x2) || (x2 < x3 && x3 < x1);
+    
+    // Vérifier si le point se trouve entre les coordonnées y des coins de départ et de fin
+    boolean yInRange = (y1 < y3 && y3 < y2) || (y2 < y3 && y3 < y1);
+    
+    // Le point est à l'intérieur de la pièce si ses coordonnées x et y sont dans les plages définies
+    return xInRange && yInRange;
+}
+
+    
+   public double Devis_Piece() {
+    // Calculer le prix des murs,stream permet d'ajouter la somme des murs
+    double prixMurs = Liste_Mur.stream().mapToDouble(Mur::Devis_Mur).sum();
+    
+    // Calculer le prix du sol et du plafond
+    double prixSol = sol.Devis_Sol();
+    double prixPlafond = plafond.Devis_Plafond();
+    
+    // Calculer le prix total de la pièce
+    double prixTotal = prixMurs + prixSol + prixPlafond;
+    
+    // Arrondir le prix total à deux décimales
+    BigDecimal bd = BigDecimal.valueOf(prixTotal).setScale(2, RoundingMode.DOWN);
+    
+    // Mettre à jour le prix de la pièce avec le nouveau montant arrondi
+    this.prix = bd.doubleValue();
+    
+    // Retourner le prix arrondi
+    return this.getPrix();
+}
+
     
     public void Piece(Color CouleurFond) {
         this.color = new Couleur(this.CouleurFond.getRed(), this.CouleurFond.getGreen(), this.CouleurFond.getBlue(), this.CouleurFond.getOpacity());

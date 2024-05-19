@@ -10,10 +10,11 @@ import javafx.scene.paint.Color;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  *
- * @author laelt
+ * @author antoinez
  */
 public class Etage implements Serializable{
     
@@ -37,10 +38,11 @@ public class Etage implements Serializable{
     public double getHauteur_sous_plafond() {return this.hauteur_sous_plafond;}
     
     //Setters
-    public void setHauteur_sous_plafond(double hauteur){this.hauteur_sous_plafond = hauteur;}
+    public void setHauteur_sous_plafond(double hauteur){
+        this.hauteur_sous_plafond = hauteur;
+    }
     
-    //AUTRES METHODES
-    
+    //méthode qui permettent d'ajouter ou de supprimer des pièce dnas une liste
     public void add(Piece piece){
         if (!this.Liste_Piece.contains(piece)){
             this.Liste_Piece.add(piece);
@@ -65,7 +67,7 @@ public class Etage implements Serializable{
         Mur Mproche = this.Liste_Piece.get(0).getListe_Mur().get(0);
         double dmin = 10000;
         for (Piece p : this.Liste_Piece){
-            for (Mur m : p.getListe_Mur()){
+            for (Mur m : p.getListe_Mur()){//parcous les murs de chaque pièces si la distance d'un murs 
                 double dtest = m.DistanceClick(click);
                 if (dtest<dmin){
                     dmin = dtest;
@@ -88,15 +90,24 @@ public class Etage implements Serializable{
         return null;
     }
     
-    public double Devis_Etage(){ 
-        double prixPieces = 0;
-        for (Piece p : Liste_Piece){
-            prixPieces = prixPieces + p.Devis_Piece();
-        }
-        this.prix = prixPieces;
-        BigDecimal bd = new BigDecimal(this.prix);
-        bd= bd.setScale(2,BigDecimal.ROUND_DOWN);
-        this.prix = bd.doubleValue();
-        return this.getPrix();
+   
+
+public double Devis_Etage() {
+    BigDecimal total = BigDecimal.ZERO;
+
+    // Parcourir toutes les pièces de l'étage
+    for (Piece piece : Liste_Piece) {
+        // Calculer le devis de la pièce et l'ajouter au devis total
+        double prixPiece = piece.Devis_Piece();
+        total = total.add(BigDecimal.valueOf(prixPiece));
     }
-}
+
+    // Arrondir le devis total à deux décimales
+    total = total.setScale(2, RoundingMode.DOWN);
+
+    // Mettre à jour le prix total de l'étage avec le devis arrondi
+    this.prix = total.doubleValue();
+
+    // Retourner le devis total de l'étage
+    return this.prix;
+}}

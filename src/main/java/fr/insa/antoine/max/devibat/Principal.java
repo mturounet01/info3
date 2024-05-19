@@ -13,27 +13,27 @@ import javafx.scene.paint.Color;
  *
  * @author maxt
  */
-public class MainPane extends BorderPane{
+public class Principal extends BorderPane{
     private Batiment Batiment;
     private Etage etage;
-    private Controleur controleur;
+    private CreerPiece controleur;
     
-    private Vu_Demarrage Vu_Demarrage;
-    private Vu_Etage Vu_Etage;
-    private Vu_Menu Vu_Menu;
-    private Vu_Dessin_Bat Vu_Dessin_Bat;
+    private FenDemarrage Start;
+    private FenEtage fenetage;
+    private FenMenu fenmenu;
+    private FenDessin fendessin;
 
-    public MainPane (){
-        this.controleur = new Controleur(this);
+    public Principal (){
+        this.controleur = new CreerPiece(this);
         
-        this.Vu_Demarrage = new Vu_Demarrage(this);
+        this.Start = new FenDemarrage(this);
         
         this.controleur.changeEtat(0);
     }
     
     public void Demarrage(){
-       this.Vu_Demarrage = new Vu_Demarrage(this);
-       this.setCenter(this.Vu_Demarrage);
+       this.Start = new FenDemarrage(this);
+       this.setCenter(this.Start);
     }
     
     public void Nouveau_Batiement(){
@@ -51,66 +51,69 @@ public class MainPane extends BorderPane{
             this.Batiment.getListe_Etage().add(new Etage());
         }
         this.etage = this.Batiment.getListe_Etage().get(0);
-        this.Vu_Dessin_Bat = new Vu_Dessin_Bat(this);
-        this.Vu_Etage = new Vu_Etage(this);
-        this.Vu_Menu = new Vu_Menu(this);
+        this.fendessin = new FenDessin(this);
+        this.fenetage = new FenEtage(this);
+        this.fenmenu = new FenMenu(this);
 //ajuste la taille du batiment selon les valeur entrées précedemment
         this.getVu_Etage().getcZoneDessin().getCanvas().setHeight(this.Batiment.getLongueur());
         this.getVu_Etage().getcZoneDessin().getCanvas().setWidth(this.Batiment.getLargeur());
         
-       this.setLeft(this.Vu_Dessin_Bat);
+       this.setLeft(this.fendessin);
        //organisation des pièces
 
 BorderPane rightPane = new BorderPane();
-rightPane.setTop(this.Vu_Menu);
-rightPane.setCenter(this.Vu_Etage);
-
+rightPane.setTop(this.fenmenu);
+rightPane.setCenter(this.fenetage);
 this.setRight(rightPane);
 
         
-        this.Vu_Etage.getcZoneDessin().redrawAll();
+        this.fenetage.getcZoneDessin().redrawAll();
     }
    // lorsqu'on change de niveau on actualise les champs 
     public void ReConstruction(){
         this.etage = this.Batiment.getListe_Etage().get(0);
-        this.Vu_Dessin_Bat = new Vu_Dessin_Bat(this);
-        this.Vu_Etage = new Vu_Etage(this);
-        this.Vu_Menu = new Vu_Menu(this);
+        this.fendessin = new FenDessin(this);
+        this.fenetage = new FenEtage(this);
+        this.fenmenu = new FenMenu(this);
 //ajuste la taille du batiment selon les valeur entrées précedemment
         this.getVu_Etage().getcZoneDessin().getCanvas().setHeight(this.Batiment.getLongueur());
         this.getVu_Etage().getcZoneDessin().getCanvas().setWidth(this.Batiment.getLargeur());
         
-        this.setLeft(this.Vu_Menu);
+       
         GridPane GP = new GridPane();
-        GP.add(this.Vu_Dessin_Bat, 0, 0);
+        GP.add(this.fendessin, 0, 0);
         GP.setAlignment(Pos.CENTER);
         this.setCenter(GP);
-        this.setRight(this.Vu_Etage);
+        BorderPane rightPane = new BorderPane();
+rightPane.setTop(this.fenmenu);
+rightPane.setCenter(this.fenetage);
+this.setRight(rightPane);
         
-        this.Vu_Etage.getcZoneDessin().redrawAll();
+        
+        this.fenetage.getcZoneDessin().redrawAll();
     }
     public void redrawAll(){
-        this.Vu_Etage.getcZoneDessin().redrawAll();
+        this.fenetage.getcZoneDessin().redrawAll();
     }
     
     //GETTERS
-    public Vu_Etage getVu_Etage() {return Vu_Etage;}
-    public Vu_Menu getVu_Menu() {return Vu_Menu;}
-    public Vu_Dessin_Bat getVu_Dessin_Bat(){return Vu_Dessin_Bat;}
-    public Vu_Demarrage getVu_Demarrage() {return Vu_Demarrage;}
+    public FenEtage getVu_Etage() {return fenetage;}
+    public FenMenu getVu_Menu() {return fenmenu;}
+    public FenDessin getVu_Dessin_Bat(){return fendessin;}
+    public FenDemarrage getVu_Demarrage() {return Start;}
     public Etage getEtage() {return etage;}
-    public Controleur getControleur() {return controleur;}
+    public CreerPiece getCreerPiece() {return controleur;}
     public Batiment getBatiment() {return Batiment;}
     
     public void setEtage (Etage nv_etage){
         this.etage = nv_etage;
     }
     //met à jour la couleur des pieces lorsqu'il y a un revetement
-    public void ResetCouleur(){
-        for (Piece p : this.getEtage().getListe_Piece()){
-            for (Mur m : p.getListe_Mur()){
+    public void ActuCouleur(){
+        for (Piece p : this.getEtage().getListe_Piece()){//parcours les pièces de cet étage
+            for (Mur m : p.getListe_Mur()){//parcours les murs de cette pièce
                 if (m.getRevetement()!=null){
-                    m.setColor(Color.AZURE);
+                    m.setColor(Color.ORANGE);
                 }else{
                     m.setColor(Color.BLACK);
                 }
