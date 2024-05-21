@@ -2,6 +2,10 @@ package fr.insa.antoine.max.devibat;
 
 import fr.insa.antoine.max.devibat.Batiment;
 import java.io.*;
+/**
+ *
+ * @author maxt
+ */
 
 
 //constructeur

@@ -62,11 +62,11 @@ public class FenDemarrage extends BorderPane {
     }
 
     //Getters
-    public FenCharger_Projet getVu_Charger_Projet() {
+    public FenCharger_Projet getFenCharger_Projet() {
         return this.FenCharger_Projet;
     }
 
-    public FenNouveau_Bat getVu_Nouveau_Bat() {
+    public FenNouveau_Bat getFenNouveau_Bat() {
         return this.FenNouveau_Bat;
     }
 

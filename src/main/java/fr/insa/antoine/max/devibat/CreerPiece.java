@@ -7,6 +7,7 @@ package fr.insa.antoine.max.devibat;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
@@ -18,6 +19,9 @@ public class CreerPiece {
     private double[] pos = new double[2];
     private ArrayList<Mur> Liste_Selection_Mur;
     private ArrayList<Piece> Liste_Selection_Piece;
+    private static final String MESSAGE_ERREUR_ACTION_NON_VALIDE = "Validez votre action";
+private static final String MESSAGE_DEVIS_CREE = "Le Devis a été créé";
+
     
     public CreerPiece(Principal vue){
         this.vue = vue;
@@ -25,7 +29,7 @@ public class CreerPiece {
         this.Liste_Selection_Piece = new ArrayList<Piece>();
     }
     
-    public void changeEtat(int nouvelEtat){
+    public void changeEtat(int nouvelEtat){// modifie la couleur de la pièce si il y a un revetement
         this.etat = nouvelEtat;
         
         if (this.etat == 0){
@@ -40,18 +44,18 @@ public class CreerPiece {
                 }
             }
             this.vue.redrawAll();
-            this.vue.getVu_Etage().getVb_Haut().setDisable(false);
-            this.vue.getVu_Etage().getVb_Bas().setDisable(true);
+            this.vue.getFenEtage().getVb_Haut().setDisable(false);
+            this.vue.getFenEtage().getVb_Bas().setDisable(true);
         }else if (this.etat == 11){
-            this.vue.getVu_Etage().getVb_Haut().setDisable(true);
+            this.vue.getFenEtage().getVb_Haut().setDisable(true);
         }else if (this.etat == 20){
-            this.vue.getVu_Etage().getVb_Haut().setDisable(true);
-            this.vue.getVu_Etage().getVb_Bas().setDisable(false);
-            this.vue.getVu_Etage().getGp_Piece().setDisable(true);
-            this.vue.getVu_Etage().getHb_Mur().setDisable(true);
-            this.vue.getVu_Etage().getHb_Action().setDisable(true);
-            this.vue.getVu_Etage().getHb_Porte().setDisable(true);
-            this.vue.getVu_Etage().getHb_Fenetre().setDisable(true);
+            this.vue.getFenEtage().getVb_Haut().setDisable(true);
+            this.vue.getFenEtage().getVb_Bas().setDisable(false);
+            this.vue.getFenEtage().getGp_Piece().setDisable(true);
+            this.vue.getFenEtage().getHb_Mur().setDisable(true);
+            this.vue.getFenEtage().getHb_Action().setDisable(true);
+            this.vue.getFenEtage().getHb_Porte().setDisable(true);
+            this.vue.getFenEtage().getHb_Fenetre().setDisable(true);
             for (Piece p : this.vue.getEtage().getListe_Piece()){
                 if (p.getSol().getRevetement() != null && p.getPlafond().getRevetement() != null){
                     p.setCouleurFond(Color.AZURE);
@@ -135,57 +139,57 @@ private void updateUI() {
 }
 
 private void disableAllControls() {
-    this.vue.getVu_Etage().getGp_Piece().setDisable(true);
-    this.vue.getVu_Etage().getHb_Mur().setDisable(true);
-    this.vue.getVu_Etage().getHb_Action().setDisable(true);
-    this.vue.getVu_Etage().getTf_Largeur().setText(" ");
-    this.vue.getVu_Etage().getTf_Longueur().setText(" ");
-    this.vue.getVu_Etage().getHb_Porte().setDisable(true);
-    this.vue.getVu_Etage().getHb_Fenetre().setDisable(true);
+    this.vue.getFenEtage().getGp_Piece().setDisable(true);
+    this.vue.getFenEtage().getHb_Mur().setDisable(true);
+    this.vue.getFenEtage().getHb_Action().setDisable(true);
+    this.vue.getFenEtage().getTf_Largeur().setText(" ");
+    this.vue.getFenEtage().getTf_Longueur().setText(" ");
+    this.vue.getFenEtage().getHb_Porte().setDisable(true);
+    this.vue.getFenEtage().getHb_Fenetre().setDisable(true);
 }
 
 private void enableMurControls() {
-    this.vue.getVu_Etage().getHb_Mur().setDisable(false);
-    this.vue.getVu_Etage().getHb_Action().setDisable(false);
-    this.vue.getVu_Etage().getHb_Porte().setDisable(false);
-    this.vue.getVu_Etage().getHb_Fenetre().setDisable(false);
+    this.vue.getFenEtage().getHb_Mur().setDisable(false);
+    this.vue.getFenEtage().getHb_Action().setDisable(false);
+    this.vue.getFenEtage().getHb_Porte().setDisable(false);
+    this.vue.getFenEtage().getHb_Fenetre().setDisable(false);
 }
 
 private void disablePieceControls() {
-    this.vue.getVu_Etage().getGp_Piece().setDisable(true);
+    this.vue.getFenEtage().getGp_Piece().setDisable(true);
 }
 
 private void enablePieceControls() {
-    this.vue.getVu_Etage().getGp_Piece().setDisable(false);
-    this.vue.getVu_Etage().getHb_Action().setDisable(false);
+    this.vue.getFenEtage().getGp_Piece().setDisable(false);
+    this.vue.getFenEtage().getHb_Action().setDisable(false);
 }
 
 private void disableMurControls() {
-    this.vue.getVu_Etage().getHb_Mur().setDisable(true);
+    this.vue.getFenEtage().getHb_Mur().setDisable(true);
 }
 
 private void updateMurDetails(Mur mur) {
-    this.vue.getVu_Etage().getTf_Largeur().setText(" ");
-    this.vue.getVu_Etage().getTf_Longueur().setText(" ");
-    this.vue.getVu_Etage().getTf_Porte().setText(Integer.toString(mur.getNb_Porte()));
-    this.vue.getVu_Etage().getTf_Fenetre().setText(Integer.toString(mur.getNb_Fenetre()));
+    this.vue.getFenEtage().getTf_Largeur().setText(" ");
+    this.vue.getFenEtage().getTf_Longueur().setText(" ");
+    this.vue.getFenEtage().getTf_Porte().setText(Integer.toString(mur.getNb_Porte()));
+    this.vue.getFenEtage().getTf_Fenetre().setText(Integer.toString(mur.getNb_Fenetre()));
 
     String revetement = (mur.getRevetement() == null) ? " " : mur.getRevetement().getDesignation();
-    this.vue.getVu_Etage().getCb_Rev_Mur().setValue(revetement);
+    this.vue.getFenEtage().getCb_Rev_Mur().setValue(revetement);
 }
 
 private void updatePieceDetails(Piece piece) {
-    this.vue.getVu_Etage().getTf_Largeur().setText(Double.toString(piece.getLargeur() / 10));
-    this.vue.getVu_Etage().getTf_Longueur().setText(Double.toString(piece.getLongueur() / 10));
+    this.vue.getFenEtage().getTf_Largeur().setText(Double.toString(piece.getLargeur() / 10));
+    this.vue.getFenEtage().getTf_Longueur().setText(Double.toString(piece.getLongueur() / 10));
 
     String solRevetement = (piece.getSol().getRevetement() == null) ? " " : piece.getSol().getRevetement().getDesignation();
-    this.vue.getVu_Etage().getCb_Rev_Sol().setValue(solRevetement);
+    this.vue.getFenEtage().getCb_Rev_Sol().setValue(solRevetement);
 
     String plafondRevetement = (piece.getPlafond().getRevetement() == null) ? " " : piece.getPlafond().getRevetement().getDesignation();
-    this.vue.getVu_Etage().getCb_Rev_Plafond().setValue(plafondRevetement);
+    this.vue.getFenEtage().getCb_Rev_Plafond().setValue(plafondRevetement);
 
-    this.vue.getVu_Etage().getHb_Porte().setDisable(true);
-    this.vue.getVu_Etage().getHb_Fenetre().setDisable(true);
+    this.vue.getFenEtage().getHb_Porte().setDisable(true);
+    this.vue.getFenEtage().getHb_Fenetre().setDisable(true);
 }
 
 private void updateColors() {
@@ -216,7 +220,7 @@ private void updateColors() {
     }
 
     void Click_b_Valider() {
-        this.vue.getVu_Etage().getRb_Dessiner().setSelected(true);
+        this.vue.getFenEtage().getRb_Dessiner().setSelected(true);
         this.changeEtat(10);
     }
 
@@ -225,86 +229,98 @@ private void updateColors() {
             for (Piece p : this.Liste_Selection_Piece){
                 this.vue.getEtage().getListe_Piece().remove(p);
             }
-            this.vue.getVu_Etage().getL_Message_Erreur().setText(" ");
+            this.vue.getFenEtage().getL_Message_Erreur().setText(" ");
             this.vue.redrawAll();
         }else{
-            this.vue.getVu_Etage().getL_Message_Erreur().setText("Veuilliez selectionner une piece");
+            this.vue.getFenEtage().getL_Message_Erreur().setText("Veuilliez selectionner une piece");
         }
     }
 
     void Click_b_Appliquer() {
-        if (!this.Liste_Selection_Piece.isEmpty()){
-            double nouvelle_largeur = 10*Double.parseDouble(this.vue.getVu_Etage().getTf_Largeur().getText());
-            double nouvelle_longueur = 10*Double.parseDouble(this.vue.getVu_Etage().getTf_Longueur().getText());
-            String nv_rev_sol = this.vue.getVu_Etage().getCb_Rev_Sol().getValue();
-            String nv_rev_plafond = this.vue.getVu_Etage().getCb_Rev_Plafond().getValue();
-            if ((nouvelle_largeur != this.Liste_Selection_Piece.get(0).getLargeur())||((nouvelle_longueur != this.Liste_Selection_Piece.get(0).getLongueur()))){
-                if (nouvelle_largeur !=0){
-                    for (Piece p : this.Liste_Selection_Piece){
-                        p.setLargeur(nouvelle_largeur);
-                    }
-                }
-                if(nouvelle_longueur!=0){
-                    for (Piece p : this.Liste_Selection_Piece){
-                        p.setLongueur(nouvelle_longueur);
-                    }
-                }
-            }
-            if(nv_rev_sol != null){
-                for (Piece p : this.Liste_Selection_Piece){
-                    p.getSol().setRevetement(this.vue.getBatiment().getStringToPoursol().get(nv_rev_sol));
-                }
-            }
-            if(nv_rev_plafond != null){
-                for (Piece p : this.Liste_Selection_Piece){
-                    p.getPlafond().setRevetement(this.vue.getBatiment().getStringToPourplafond().get(nv_rev_plafond));
-                }
-            }
-            for (Piece p : this.Liste_Selection_Piece){
-                if (p.getSol().getRevetement() != null && p.getPlafond().getRevetement() != null){
-                }
-            }
-        }
-        if (!this.Liste_Selection_Mur.isEmpty()){
-            String nouveau_revetement = this.vue.getVu_Etage().getCb_Rev_Mur().getValue();
-            if (nouveau_revetement != null){
-                for (Mur m : this.Liste_Selection_Mur){
-                    m.setRevetement(this.vue.getBatiment().getStringToPourmur().get(nouveau_revetement));
-                    m.setColor(Color.GREEN);
-                    m.setNb_Porte(Integer.parseInt(this.vue.getVu_Etage().getTf_Porte().getText()));
-                    m.setNb_Fenetre(Integer.parseInt(this.vue.getVu_Etage().getTf_Fenetre().getText()));
-                }
-            }
-            for (Mur m : this.Liste_Selection_Mur){
-                m.setNb_Porte(Integer.parseInt(this.vue.getVu_Etage().getTf_Porte().getText()));
-                m.setNb_Fenetre(Integer.parseInt(this.vue.getVu_Etage().getTf_Fenetre().getText()));
-            }
-        }
-        this.vue.ActuCouleur();
-        this.vue.redrawAll();
+    if (!this.Liste_Selection_Piece.isEmpty()) {
+        applyChangesToSelectedPieces();
     }
+    if (!this.Liste_Selection_Mur.isEmpty()) {
+        applyChangesToSelectedWalls();
+    }
+    this.vue.ActuCouleur();
+    this.vue.redrawAll();
+}
 
-    void rb_Dessiner_chosit() {
+private void applyChangesToSelectedPieces() {
+    double nouvelleLargeur = parseTextFieldToDouble(this.vue.getFenEtage().getTf_Largeur()) * 10;
+    double nouvelleLongueur = parseTextFieldToDouble(this.vue.getFenEtage().getTf_Longueur()) * 10;
+    String nvRevSol = this.vue.getFenEtage().getCb_Rev_Sol().getValue();
+    String nvRevPlafond = this.vue.getFenEtage().getCb_Rev_Plafond().getValue();
+
+    for (Piece p : this.Liste_Selection_Piece) {
+        if (nouvelleLargeur != 0 && nouvelleLargeur != p.getLargeur()) {
+            p.setLargeur(nouvelleLargeur);
+        }
+        if (nouvelleLongueur != 0 && nouvelleLongueur != p.getLongueur()) {
+            p.setLongueur(nouvelleLongueur);
+        }
+        if (nvRevSol != null) {
+            p.getSol().setRevetement(this.vue.getBatiment().getStringToPoursol().get(nvRevSol));
+        }
+        if (nvRevPlafond != null) {
+            p.getPlafond().setRevetement(this.vue.getBatiment().getStringToPourplafond().get(nvRevPlafond));
+        }   }
+}
+
+private void applyChangesToSelectedWalls() {
+    String nouveauRevetement = this.vue.getFenEtage().getCb_Rev_Mur().getValue();
+    int nbPorte = parseTextFieldToInt(this.vue.getFenEtage().getTf_Porte());
+    int nbFenetre = parseTextFieldToInt(this.vue.getFenEtage().getTf_Fenetre());
+
+    for (Mur m : this.Liste_Selection_Mur) {
+        if (nouveauRevetement != null) {
+            m.setRevetement(this.vue.getBatiment().getStringToPourmur().get(nouveauRevetement));
+            m.setColor(Color.GREEN);
+        }
+        m.setNb_Porte(nbPorte);
+        m.setNb_Fenetre(nbFenetre);
+    }
+}
+
+private double parseTextFieldToDouble(TextField textField) {
+    try {
+        return Double.parseDouble(textField.getText());
+    } catch (NumberFormatException e) {
+        return 0;
+    }
+}
+
+private int parseTextFieldToInt(TextField textField) {
+    try {
+        return Integer.parseInt(textField.getText());
+    } catch (NumberFormatException e) {
+        return 0;
+    }
+}
+
+
+    void rb_Dessiner() {
         this.changeEtat(10);
     }
 
-    void rb_Selectionner_chosit() {
+    void rb_Selectionner() {
         this.changeEtat(20);
     }
 
     void spinner_change(int num_etage) {
-        this.vue.getEtage().setHauteur_sous_plafond(Double.parseDouble(this.vue.getVu_Menu().getTf_HSP().getText()));
+        this.vue.getEtage().setHauteur_sous_plafond(Double.parseDouble(this.vue.getFenMenu().getTf_HSP().getText()));
         this.vue.setEtage(this.vue.getBatiment().getListe_Etage().get(num_etage));
-        this.vue.getVu_Menu().getTf_HSP().setText(Double.toString(this.vue.getEtage().getHauteur_sous_plafond()));
+        this.vue.getFenMenu().getTf_HSP().setText(Double.toString(this.vue.getEtage().getHauteur_sous_plafond()));
         this.vue.redrawAll();
     }
     
     void Click_b_Valider_Bat() {
         this.vue.Creation_Bat();
-        double largeur = 10*Double.parseDouble(this.vue.getVu_Demarrage().getVu_Nouveau_Bat().getTf_Largeur().getText());
-        double longueur = 10*Double.parseDouble(this.vue.getVu_Demarrage().getVu_Nouveau_Bat().getTf_Longueur().getText());
-        int nb_etage = Integer.parseInt(this.vue.getVu_Demarrage().getVu_Nouveau_Bat().getTf_nb_etage().getText());
-        String nom_bat = this.vue.getVu_Demarrage().getVu_Nouveau_Bat().getTf_nom_bat().getText();
+        double largeur = 10*Double.parseDouble(this.vue.getFenDemarrage().getFenNouveau_Bat().getTf_Largeur().getText());
+        double longueur = 10*Double.parseDouble(this.vue.getFenDemarrage().getFenNouveau_Bat().getTf_Longueur().getText());
+        int nb_etage = Integer.parseInt(this.vue.getFenDemarrage().getFenNouveau_Bat().getTf_nb_etage().getText());
+        String nom_bat = this.vue.getFenDemarrage().getFenNouveau_Bat().getTf_nom_bat().getText();
         this.vue.getBatiment().set_Largeur(largeur);
         this.vue.getBatiment().set_Longueur(longueur);
         this.vue.getBatiment().set_nb_niveau(nb_etage);
@@ -312,56 +328,82 @@ private void updateColors() {
         this.vue.getChildren().clear();
         this.vue.Construction();
         this.changeEtat(10);
-        this.vue.getVu_Menu().setTailleSpinner(this.vue.getBatiment().getTailleListeEtage()-1);
+        this.vue.getFenMenu().setTailleSpinner(this.vue.getBatiment().getTailleListeEtage()-1);
     }
     
-     void Click_b_Devis() {
-         if (this.etat != 10){
-             this.vue.getVu_Menu().getl_Erreur().setTextFill(Color.RED);
-             this.vue.getVu_Menu().getl_Erreur().setText("Validez votre action");
-         }else{
-             this.vue.getBatiment().Devis_Batiment();
-             Devis.ecrireDevis(this.vue.getBatiment());
-             this.vue.getVu_Menu().getl_Erreur().setTextFill(Color.GREEN);
-             this.vue.getVu_Menu().getl_Erreur().setText("Le Devis a été créé");
-             
-             ArrayList<Etage> etages = this.vue.getBatiment().getListe_Etage();
-             for (Etage e : etages) {
-             ArrayList<Piece> pieces = e.getListe_Piece();
-            
-                for (Piece p : pieces) {
-                    p.Piece(p.getCouleurFond());
-                
-                    ArrayList<Mur> murs = p.getListe_Mur();
+     public void Click_b_Devis() {
+    // Vérifie si l'action doit être validée avant de générer un devis
+    if (this.etat != 10) {
+        // Affiche un message d'erreur dans l'interface utilisateur
+        afficherMessageErreur(MESSAGE_ERREUR_ACTION_NON_VALIDE, Color.RED);
+    } else {
+        // Génère le devis pour le bâtiment
+        this.vue.getBatiment().Devis_Batiment();
+        // Écrit le devis dans un fichier
+        Devis.ecrireDevis(this.vue.getBatiment());
+        // Affiche un message de confirmation dans l'interface utilisateur
+        afficherMessageErreur(MESSAGE_DEVIS_CREE, Color.GREEN);
 
-                        for (Mur m : murs) {
-                            m.Mur(m.getCouleur());
-                        }
-                }
+        // Actualise l'interface utilisateur en affichant les éléments du bâtiment
+        actualiserInterfaceUtilisateur();
+
+        // Sauvegarde le bâtiment après la génération du devis
+        sauvegarderBatiment();
+    }
+}
+
+// Méthode pour afficher un message d'erreur dans l'interface utilisateur
+private void afficherMessageErreur(String message, Color couleur) {
+    this.vue.getFenMenu().getl_Erreur().setTextFill(couleur);
+    this.vue.getFenMenu().getl_Erreur().setText(message);
+}
+
+// Méthode pour actualiser l'interface utilisateur en affichant les éléments du bâtiment
+private void actualiserInterfaceUtilisateur() {
+    for (Etage e : this.vue.getBatiment().getListe_Etage()) {
+        for (Piece p : e.getListe_Piece()) {
+            p.Piece(p.getCouleurFond());
+            for (Mur m : p.getListe_Mur()) {
+                m.Mur(m.getCouleur());
             }
-            Sauvegarde save = new Sauvegarde(this.vue.getBatiment().getNom_Batiment() + " Sauvegarde");
-            save.sauvegarder(this.vue.getBatiment());
-         }
-     }
+        }
+    }
+}
+
+// Méthode pour sauvegarder le bâtiment après la génération du devis
+private void sauvegarderBatiment() {
+    Sauvegarde save = new Sauvegarde(this.vue.getBatiment().getNom_Batiment() + " Sauvegarde");
+    save.sauvegarder(this.vue.getBatiment());
+}
+
    
-public ArrayList<Mur> creationMurs (double[] pos, MouseEvent t){
-        ArrayList<Coin> Liste_Coin = new ArrayList<Coin>();
-        Liste_Coin.add(new Coin(pos[0],pos[1]));
-        Liste_Coin.add(new Coin(pos[0],t.getY()));
-        Liste_Coin.add(new Coin(t.getX(),t.getY()));
-        Liste_Coin.add(new Coin(t.getX(),pos[1]));
-        ArrayList<Mur> Liste_Mur = new ArrayList<Mur>();
-        Etage etage = this.vue.getEtage();
-        Liste_Mur.add(new Mur(etage,Liste_Coin.get(0), Liste_Coin.get(1)));
-        Liste_Mur.add(new Mur(etage,Liste_Coin.get(1), Liste_Coin.get(2)));
-        Liste_Mur.add(new Mur(etage,Liste_Coin.get(2), Liste_Coin.get(3)));
-        Liste_Mur.add(new Mur(etage,Liste_Coin.get(3), Liste_Coin.get(0)));
-        
-        return Liste_Mur;
+public ArrayList<Mur> creationMurs(double[] pos, MouseEvent t) {
+    final int POS_X = 0;
+    final int POS_Y = 1;
+
+    ArrayList<Coin> Liste_Coin = new ArrayList<>();
+    Liste_Coin.add(new Coin(pos[POS_X], pos[POS_Y]));
+    Liste_Coin.add(new Coin(pos[POS_X], t.getY()));
+    Liste_Coin.add(new Coin(t.getX(), t.getY()));
+    Liste_Coin.add(new Coin(t.getX(), pos[POS_Y]));
+
+    ArrayList<Mur> Liste_Mur = new ArrayList<>();
+    Etage etage = this.vue.getEtage();
+
+    // Création des murs à partir des coins
+    for (int i = 0; i < Liste_Coin.size(); i++) {
+        Coin currentCoin = Liste_Coin.get(i);
+        Coin nextCoin = Liste_Coin.get((i + 1) % Liste_Coin.size()); // Le prochain coin est le coin suivant dans la liste, sauf pour le dernier coin où le prochain est le premier
+
+        Liste_Mur.add(new Mur(etage, currentCoin, nextCoin));
     }
 
-    public void Click_b_Charger() {
-        String Nom_fichier = this.vue.getVu_Demarrage().getVu_Charger_Projet().gettf_nom_projet().getText()+" Sauvegarde";
+    return Liste_Mur;
+}
+
+
+    public void Click_b_Charger() {// reconstruit l'interface en fonction du projet chargé
+        String Nom_fichier = this.vue.getFenDemarrage().getFenCharger_Projet().gettf_nom_projet().getText()+" Sauvegarde";
         
         Sauvegarde save = new Sauvegarde(Nom_fichier);
         this.vue.setBatiment(save.charger(Nom_fichier));
@@ -384,24 +426,24 @@ public ArrayList<Mur> creationMurs (double[] pos, MouseEvent t){
         this.vue.getChildren().clear();
         this.vue.ReConstruction();
         this.changeEtat(10);
-        this.vue.getVu_Menu().setTailleSpinner(this.vue.getBatiment().getTailleListeEtage()-1);
+        this.vue.getFenMenu().setTailleSpinner(this.vue.getBatiment().getTailleListeEtage()-1);
     }
 
     void Click_b_Charger1() {
-        this.vue.getVu_Demarrage().Vu_Charger_Projet();
+        this.vue.getFenDemarrage().Vu_Charger_Projet();
     }
     void Click_b_Nouveau1() {
-        this.vue.getVu_Demarrage().Vu_Nouveau_Bat();
+        this.vue.getFenDemarrage().Vu_Nouveau_Bat();
     }
     void Click_b_retour() {
-        this.vue.getVu_Demarrage().retour();
+        this.vue.getFenDemarrage().retour();
     }
 
     void Click_b_Sauvegarde() {
         Sauvegarde save = new Sauvegarde(this.vue.getBatiment().getNom_Batiment() + " Sauvegarde");
         save.sauvegarder(this.vue.getBatiment());
-        this.vue.getVu_Menu().getl_Erreur().setTextFill(Color.GREEN);
-        this.vue.getVu_Menu().getl_Erreur().setText("Sauvegarde Réussie");
+        this.vue.getFenMenu().getl_Erreur().setTextFill(Color.GREEN);
+        this.vue.getFenMenu().getl_Erreur().setText("Sauvegarde Réussie");
     }
 
     void Click_b_Retour_Menu() {

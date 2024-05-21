@@ -12,7 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-
+/**
+ *
+ * @author maxt
+ */
 public class FenNouveau_Bat extends VBox {
     private GridPane gp_Acceuil;
     private Label l_Titre;

@@ -36,7 +36,7 @@ public class Principal extends BorderPane{
        this.setCenter(this.Start);
     }
     
-    public void Nouveau_Batiement(){
+    public void Nouveau_Batiment(){
         //this.setCenter();
     }
     
@@ -55,8 +55,8 @@ public class Principal extends BorderPane{
         this.fenetage = new FenEtage(this);
         this.fenmenu = new FenMenu(this);
 //ajuste la taille du batiment selon les valeur entrées précedemment
-        this.getVu_Etage().getcZoneDessin().getCanvas().setHeight(this.Batiment.getLongueur());
-        this.getVu_Etage().getcZoneDessin().getCanvas().setWidth(this.Batiment.getLargeur());
+        this.getFenEtage().getcZoneDessin().getCanvas().setHeight(this.Batiment.getLongueur());
+        this.getFenEtage().getcZoneDessin().getCanvas().setWidth(this.Batiment.getLargeur());
         
        this.setLeft(this.fendessin);
        //organisation des pièces
@@ -76,8 +76,8 @@ this.setRight(rightPane);
         this.fenetage = new FenEtage(this);
         this.fenmenu = new FenMenu(this);
 //ajuste la taille du batiment selon les valeur entrées précedemment
-        this.getVu_Etage().getcZoneDessin().getCanvas().setHeight(this.Batiment.getLongueur());
-        this.getVu_Etage().getcZoneDessin().getCanvas().setWidth(this.Batiment.getLargeur());
+        this.getFenEtage().getcZoneDessin().getCanvas().setHeight(this.Batiment.getLongueur());
+        this.getFenEtage().getcZoneDessin().getCanvas().setWidth(this.Batiment.getLargeur());
         
        
         GridPane GP = new GridPane();
@@ -97,10 +97,10 @@ this.setRight(rightPane);
     }
     
     //GETTERS
-    public FenEtage getVu_Etage() {return fenetage;}
-    public FenMenu getVu_Menu() {return fenmenu;}
-    public FenDessin getVu_Dessin_Bat(){return fendessin;}
-    public FenDemarrage getVu_Demarrage() {return Start;}
+    public FenEtage getFenEtage() {return fenetage;}
+    public FenMenu getFenMenu() {return fenmenu;}
+    public FenDessin getFenDessin_Bat(){return fendessin;}
+    public FenDemarrage getFenDemarrage() {return Start;}
     public Etage getEtage() {return etage;}
     public CreerPiece getCreerPiece() {return controleur;}
     public Batiment getBatiment() {return Batiment;}

@@ -26,7 +26,7 @@ import javafx.scene.paint.Color;
 
 /**
  *
- * @author laelt
+ * @author maxt
  */
 public class FenEtage extends Pane {
     private CreerPiece creerPiece; 
@@ -100,19 +100,19 @@ public class FenEtage extends Pane {
   //bouton qui permet de dessiner la pièce 
         this.rb_Dessiner.setText("Dessiner");
         this.rb_Dessiner.setOnAction((t)->{
-            this.creerPiece.rb_Dessiner_chosit();
+            this.creerPiece.rb_Dessiner();
         });
         //bouton qui permet de mettre des revetements
         this.rb_Selectionner.setText("Selectionner");
         this.rb_Selectionner.setOnAction((t)->{
-            this.creerPiece.rb_Selectionner_chosit();
+            this.creerPiece.rb_Selectionner();
         });
         ToggleGroup Group_rb = new ToggleGroup();
         this.rb_Dessiner.setToggleGroup(Group_rb);
         this.rb_Selectionner.setToggleGroup(Group_rb);
         this.rb_Dessiner.setSelected(true);
         
-        this.cZoneDessin = this.principal.getVu_Dessin_Bat();
+        this.cZoneDessin = this.principal.getFenDessin_Bat();
         
         this.vb_Bas.setAlignment(Pos.CENTER);
         

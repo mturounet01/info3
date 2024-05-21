@@ -18,10 +18,12 @@ import java.util.StringTokenizer;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 /**
  *
- * @author laelt
+ * @author maxt
  */
 public class Batiment implements Serializable{
     
@@ -75,7 +77,7 @@ public class Batiment implements Serializable{
     public void set_nb_niveau(int nb){this.niveau = nb;}
     public void set_Nom_Batiment(String nom){this.Nom_Batiment = nom;}
     
-    public void Creation_Liste_Revetement(){
+    public void Creation_Liste_Revetement(){//permet de lire les revêtements
         String designation;
         int idRevetement, mur, sol, plafond;
         double prixunit;
@@ -126,15 +128,16 @@ public class Batiment implements Serializable{
         return false;
         }
     
-    public void Devis_Batiment(){
-        double prixEtages = 0;
-        for (Etage e : Liste_Etage){
-            prixEtages = prixEtages + e.Devis_Etage();
+    public void Devis_Batiment() {
+        BigDecimal prixEtages = BigDecimal.ZERO;
+        MathContext mc = new MathContext(2, RoundingMode.DOWN);
+
+        for (Etage e : Liste_Etage) {
+            BigDecimal devisEtage = new BigDecimal(e.Devis_Etage(), mc);
+            prixEtages = prixEtages.add(devisEtage);
         }
-        this.prix = prixEtages;
-        BigDecimal bd = new BigDecimal(this.prix);
-        bd= bd.setScale(2,BigDecimal.ROUND_DOWN);
-        this.prix = bd.doubleValue();
+
+        this.prix = prixEtages.setScale(2, RoundingMode.DOWN).doubleValue();
     }
 
-}
+   }

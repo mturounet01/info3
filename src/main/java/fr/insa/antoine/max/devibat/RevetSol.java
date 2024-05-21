@@ -6,7 +6,7 @@ package fr.insa.antoine.max.devibat;
 
 /**
  *
- * @author Elève
+ * @author maxt
  */
 public class RevetSol extends Revetements {//classe fille de Revetements
 

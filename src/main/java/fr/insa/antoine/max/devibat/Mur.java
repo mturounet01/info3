@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 /**
  *
- * @author laelt
+ * @author antoinez
  */
 public class Mur implements Serializable{
 

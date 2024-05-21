@@ -11,13 +11,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+/**
+ *
+ * @author maxt
+ */
 
 public class Devis {
     
     private static final String DEVIS_EXTENSION = ".txt";
     private static final String NO_REVETEMENT = "Aucun";
     private static final String EURO_SYMBOL = "€";
-    //méthode qui écris le devis devis dans un fichier texte
+    //méthode qui écris le devis dans un fichier texte
     public static void ecrireDevis(Batiment batiment) {
         String fileName = batiment.getNom_Batiment() + " Devis" + DEVIS_EXTENSION;
         
