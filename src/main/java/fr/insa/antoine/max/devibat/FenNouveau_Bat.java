@@ -30,7 +30,7 @@ public class FenNouveau_Bat extends VBox {
     private TextField tf_nom_bat;
     private Button b_Valider_Bat;
 
-    private CreerPiece controleur;
+    private Moniteur controleur;
     private Principal main;
 
     public FenNouveau_Bat(Principal main) {

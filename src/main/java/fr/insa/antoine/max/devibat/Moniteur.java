@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 
-public class CreerPiece {
+public class Moniteur {
     
     private Principal vue;
     private int etat;
@@ -23,59 +23,71 @@ public class CreerPiece {
 private static final String MESSAGE_DEVIS_CREE = "Le Devis a été créé";
 
     
-    public CreerPiece(Principal vue){
+    public Moniteur(Principal vue){
         this.vue = vue;
         this.Liste_Selection_Mur = new ArrayList<Mur>();
         this.Liste_Selection_Piece = new ArrayList<Piece>();
     }
     
-    public void changeEtat(int nouvelEtat){// modifie la couleur de la pièce si il y a un revetement
-        this.etat = nouvelEtat;
-        
-        if (this.etat == 0){
-            this.vue.Demarrage();
-            
-        }else if (this.etat == 10){
-            for (Piece p : this.vue.getEtage().getListe_Piece()){
-                if (p.getSol().getRevetement() != null && p.getPlafond().getRevetement() != null){
-                    p.setCouleurFond(Color.AZURE);
-                }else{
-                    p.setCouleurFond(Color.TRANSPARENT);
-                }
-            }
-            this.vue.redrawAll();
-            this.vue.getFenEtage().getVb_Haut().setDisable(false);
-            this.vue.getFenEtage().getVb_Bas().setDisable(true);
-        }else if (this.etat == 11){
-            this.vue.getFenEtage().getVb_Haut().setDisable(true);
-        }else if (this.etat == 20){
-            this.vue.getFenEtage().getVb_Haut().setDisable(true);
-            this.vue.getFenEtage().getVb_Bas().setDisable(false);
-            this.vue.getFenEtage().getGp_Piece().setDisable(true);
-            this.vue.getFenEtage().getHb_Mur().setDisable(true);
-            this.vue.getFenEtage().getHb_Action().setDisable(true);
-            this.vue.getFenEtage().getHb_Porte().setDisable(true);
-            this.vue.getFenEtage().getHb_Fenetre().setDisable(true);
-            for (Piece p : this.vue.getEtage().getListe_Piece()){
-                if (p.getSol().getRevetement() != null && p.getPlafond().getRevetement() != null){
-                    p.setCouleurFond(Color.AZURE);
-                }
-            }
-            this.vue.redrawAll();
-        }
-    }
+  public void changeEtat(int nouvelEtat) {
+    // Met à jour l'état actuel de l'application avec l'état nouvellement passé en paramètre
+    this.etat = nouvelEtat;
 
-        void clickZoneDessin(MouseEvent t) {// un évenement de click se produit sur le dessin
-    if (this.etat == 10) {
-        handleInitialState(t);
+    // Actions à effectuer selon la valeur de l'état
+    if (this.etat == 0) {
+        // Si l'état est 0, réinitialise l'interface à l'état de démarrage
+        this.vue.Demarrage();
+    } else if (this.etat == 10) {
+        // Si l'état est 10, met à jour les couleurs des pièces et l'interface de l'étage
+        for (Piece p : this.vue.getEtage().getListe_Piece()) {
+            if (p.getSol().getRevetement() != null && p.getPlafond().getRevetement() != null) {
+                p.setCouleurFond(Color.AZURE);
+            } else {
+                p.setCouleurFond(Color.TRANSPARENT);
+            }
+        }
+        this.vue.redrawAll();
+        this.vue.getFenEtage().getVb_Haut().setDisable(false);
+        this.vue.getFenEtage().getVb_Bas().setDisable(true);
+    } else if (this.etat == 11) {
+        // Si l'état est 11, désactive certaines parties de l'interface de l'étage
+        this.vue.getFenEtage().getVb_Haut().setDisable(true);
     } else if (this.etat == 20) {
-        handleSelectionState(t);
+        // Si l'état est 20, désactive certaines parties de l'interface de l'étage et met à jour les couleurs des pièces
+        this.vue.getFenEtage().getVb_Haut().setDisable(true);
+        this.vue.getFenEtage().getVb_Bas().setDisable(false);
+        this.vue.getFenEtage().getGp_Piece().setDisable(true);
+        this.vue.getFenEtage().getHb_Mur().setDisable(true);
+        this.vue.getFenEtage().getHb_Action().setDisable(true);
+        this.vue.getFenEtage().getHb_Porte().setDisable(true);
+        this.vue.getFenEtage().getHb_Fenetre().setDisable(true);
+        for (Piece p : this.vue.getEtage().getListe_Piece()) {
+            if (p.getSol().getRevetement() != null && p.getPlafond().getRevetement() != null) {
+                p.setCouleurFond(Color.AZURE);
+            }
+        }
+        this.vue.redrawAll();
     }
 }
 
-private void handleInitialState(MouseEvent t) {//enregistre les coordonnées du premier click
+
+       void clickZoneDessin(MouseEvent t) {
+    if (this.etat == 10) {
+        // Si l'état est 10, enregistre les coordonnées du premier clic pour la création de mur ou pièce
+        Gerer_etat_initial(t);
+    } else if (this.etat == 20) {
+        // Si l'état est 20, gère la sélection des murs ou des pièces
+        handleSelectionState(t);
+    }
+
+
+}
+
+private void Gerer_etat_initial(MouseEvent t) {
+//enregistre les coordonnées du premier click
     this.pos[0] = t.getX();
     this.pos[1] = t.getY();
+    //change l'état pour indiquer que le premier click a été effectué
     this.changeEtat(11);
 }
 
@@ -85,22 +97,27 @@ private void handleSelectionState(MouseEvent t) {
     Piece pieceClick = this.vue.getEtage().PieceClick(click);
 
     if (murProche != null) {
-        updateSelection(murProche, t.isShiftDown(), t.isControlDown(), this.Liste_Selection_Mur);
+        // Si un mur est proche du clic, met à jour la sélection de murs
+        MAJSelection(murProche, t.isShiftDown(), t.isControlDown(), this.Liste_Selection_Mur);
         this.Liste_Selection_Piece.clear();
-    } else if (pieceClick != null) {// dans le cas d'une pièce 
-        updateSelection(pieceClick, t.isShiftDown(), t.isControlDown(), this.Liste_Selection_Piece);
+    } else if (pieceClick != null) {
+        // Si une pièce est cliquée, met à jour la sélection de pièces
+        MAJSelection(pieceClick, t.isShiftDown(), t.isControlDown(), this.Liste_Selection_Piece);
         this.Liste_Selection_Mur.clear();
     } else {
+        // Sinon, vide les sélections de murs et de pièces
         clearSelections();
         this.vue.ActuCouleur();
     }
 
+    // Met à jour l'interface et les couleurs après la sélection
     updateUI();
     updateColors();
     this.vue.redrawAll();
 }
 
-private <T> void updateSelection(T item, boolean isShiftDown, boolean isControlDown, List<T> selectionList) {
+
+private <T> void MAJSelection(T item, boolean isShiftDown, boolean isControlDown, List<T> selectionList) {
     if (isShiftDown) {
         selectionList.add(item);
     } else if (isControlDown) {
@@ -116,6 +133,7 @@ private <T> void updateSelection(T item, boolean isShiftDown, boolean isControlD
 }
 
 private void clearSelections() {
+    //Vide les listes de selection
     this.Liste_Selection_Mur.clear();
     this.Liste_Selection_Piece.clear();
 }
@@ -128,10 +146,12 @@ private void updateUI() {
     if (noSelection) {
         disableAllControls();
     } else if (murSelected) {
+         // Active les contrôles pour les murs et désactive ceux pour les pièces si un mur est sélectionné
         enableMurControls();
         disablePieceControls();
         updateMurDetails(this.Liste_Selection_Mur.get(0));
     } else if (pieceSelected) {
+        // Active les contrôles pour les pièces et désactive ceux pour les murs si une pièce est sélectionnée
         enablePieceControls();
         disableMurControls();
         updatePieceDetails(this.Liste_Selection_Piece.get(0));
@@ -203,6 +223,7 @@ private void updateColors() {
 
     void traceRectangleConstruction(MouseEvent t) {
         if (this.etat == 11){
+            // Ajoute une nouvelle pièce avec des murs construits selon les coordonnées de la souris
             this.vue.getEtage().add(new Piece(creationMurs(pos, t)));
             this.vue.redrawAll();
             this.vue.getEtage().remove(this.vue.getEtage().getListe_Piece().get(this.vue.getEtage().getListe_Piece().size()-1));
@@ -402,7 +423,8 @@ public ArrayList<Mur> creationMurs(double[] pos, MouseEvent t) {
 }
 
 
-    public void Click_b_Charger() {// reconstruit l'interface en fonction du projet chargé
+    public void Click_b_Charger() {
+// reconstruit l'interface en fonction du projet chargé
         String Nom_fichier = this.vue.getFenDemarrage().getFenCharger_Projet().gettf_nom_projet().getText()+" Sauvegarde";
         
         Sauvegarde save = new Sauvegarde(Nom_fichier);

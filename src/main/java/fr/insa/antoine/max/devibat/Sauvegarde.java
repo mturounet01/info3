@@ -8,10 +8,10 @@ import java.io.*;
  */
 
 
-//constructeur
+
 public class Sauvegarde {
     private String fichierSauvegarde;
-
+//constructeur
     public Sauvegarde(String fichierSauvegarde) {
         this.fichierSauvegarde = fichierSauvegarde;
     }

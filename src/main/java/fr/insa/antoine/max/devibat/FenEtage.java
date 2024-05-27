@@ -29,7 +29,7 @@ import javafx.scene.paint.Color;
  * @author maxt
  */
 public class FenEtage extends Pane {
-    private CreerPiece creerPiece; 
+    private Moniteur creerPiece; 
     private Principal principal;
     private Etage etage_a_dessiner;
     

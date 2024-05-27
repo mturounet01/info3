@@ -6,7 +6,7 @@ package fr.insa.antoine.max.devibat;
 
 /**
  *
- * @author maxt
+ * @author antoinez
  */
 public class Revetplafond extends Revetements {//classe fille de Revetements
 

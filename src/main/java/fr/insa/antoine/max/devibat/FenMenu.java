@@ -28,7 +28,7 @@ import javafx.scene.text.Font;
 public class FenMenu extends BorderPane {
     private Principal main;
     private Batiment batiment;
-    private CreerPiece creerPiece; 
+    private Moniteur creerPiece; 
     
     private Label l_titre = new Label("Etage n° :");
     private Spinner<Integer> sp_Nombre_Etage = new Spinner<>(0, 10, 0);

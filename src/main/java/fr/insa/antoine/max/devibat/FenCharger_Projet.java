@@ -22,7 +22,7 @@ public class FenCharger_Projet extends VBox {
     private TextField tf_nom_projet = new TextField();
     private Button b_Charger;
     
-    private CreerPiece creerPiece;
+    private Moniteur creerPiece;
     private Principal main;
     
     public FenCharger_Projet(Principal main) {

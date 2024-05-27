@@ -18,7 +18,7 @@ import javafx.scene.text.Font;
  */
 public class FenDemarrage extends BorderPane {
 
-    private CreerPiece creerPiece;
+    private Moniteur creerPiece;
     private Principal main;
     private FenCharger_Projet FenCharger_Projet;
     private FenNouveau_Bat FenNouveau_Bat;

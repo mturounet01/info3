@@ -38,9 +38,9 @@ public class Batiment implements Serializable{
     private ArrayList<String> liste_mur = new ArrayList<String>();
     private ArrayList<String> liste_plafond = new ArrayList<String>();
     private ArrayList<String> liste_sol = new ArrayList<String>();
-    private HashMap<String,Revetmur> StringToPourmur= new HashMap<String,Revetmur>();
-    private HashMap<String,Revetplafond> StringToPourplafond= new HashMap<String,Revetplafond>();
-    private HashMap<String,RevetSol> StringToPoursol= new HashMap<String,RevetSol>();
+    private HashMap<String,Revetmur> StringToRevetmur= new HashMap<String,Revetmur>();
+    private HashMap<String,Revetplafond> StringToRevetplafond= new HashMap<String,Revetplafond>();
+    private HashMap<String,RevetSol> StringToRevetsol= new HashMap<String,RevetSol>();
     
     //Constructeurs
     public Batiment(){
@@ -48,10 +48,10 @@ public class Batiment implements Serializable{
         this.liste_mur.add(" ");
         this.liste_sol.add(" ");
         this.liste_plafond.add(" ");
-        this.StringToPourmur.put(" ", null);
-        this.StringToPoursol.put(" ", null);
-        this.StringToPourplafond.put(" ", null);
-        this.Creation_Liste_Revetement();
+        this.StringToRevetmur.put(" ", null);
+        this.StringToRevetsol.put(" ", null);
+        this.StringToRevetplafond.put(" ", null);
+        this.Lecturerevetements();
     }
     
     //GETTERS
@@ -64,9 +64,9 @@ public class Batiment implements Serializable{
     public ArrayList<String> getListe_mur() {return liste_mur;}
     public ArrayList<String> getListe_plafond() {return liste_plafond;}
     public ArrayList<String> getListe_sol() {return liste_sol;}
-    public HashMap<String,Revetmur> getStringToPourmur (){return this.StringToPourmur;}
-    public HashMap<String,RevetSol> getStringToPoursol (){return this.StringToPoursol;}
-    public HashMap<String,Revetplafond> getStringToPourplafond (){return this.StringToPourplafond;}
+    public HashMap<String,Revetmur> getStringToPourmur (){return this.StringToRevetmur;}
+    public HashMap<String,RevetSol> getStringToPoursol (){return this.StringToRevetsol;}
+    public HashMap<String,Revetplafond> getStringToPourplafond (){return this.StringToRevetplafond;}
     
     public double getPrix() {return this.prix;}
     
@@ -77,7 +77,7 @@ public class Batiment implements Serializable{
     public void set_nb_niveau(int nb){this.niveau = nb;}
     public void set_Nom_Batiment(String nom){this.Nom_Batiment = nom;}
     
-    public void Creation_Liste_Revetement(){//permet de lire les revêtements
+    public void Lecturerevetements(){//permet de lire les revêtements sur le fichier texte
         String designation;
         int idRevetement, mur, sol, plafond;
         double prixunit;
@@ -98,17 +98,17 @@ public class Batiment implements Serializable{
                 if(test_binaire(mur)){
                     Revetmur objmur = new Revetmur(idRevetement,designation,prixunit);
                    this.liste_mur.add(objmur.getDesignation());
-                    this.StringToPourmur.put(objmur.getDesignation(),objmur);// mettre dans les listes les objets
+                    this.StringToRevetmur.put(objmur.getDesignation(),objmur);// mettre dans les listes les objets
                 }
                 if(test_binaire(sol)){
                     RevetSol objsol = new RevetSol(idRevetement,designation,prixunit);
                     this.liste_sol.add(objsol.getDesignation());
-                    this.StringToPoursol.put(objsol.getDesignation(),objsol);
+                    this.StringToRevetsol.put(objsol.getDesignation(),objsol);
                 }
                 if(test_binaire(plafond)){
                     Revetplafond objplafond = new Revetplafond(idRevetement,designation,prixunit);
                     this.liste_plafond.add(objplafond.getDesignation());
-                    this.StringToPourplafond.put(objplafond.getDesignation(),objplafond);
+                    this.StringToRevetplafond.put(objplafond.getDesignation(),objplafond);
                 }
             }
         revet.close();

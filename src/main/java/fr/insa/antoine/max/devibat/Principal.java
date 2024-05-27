@@ -16,7 +16,7 @@ import javafx.scene.paint.Color;
 public class Principal extends BorderPane{
     private Batiment Batiment;
     private Etage etage;
-    private CreerPiece controleur;
+    private Moniteur controleur;
     
     private FenDemarrage Start;
     private FenEtage fenetage;
@@ -24,7 +24,7 @@ public class Principal extends BorderPane{
     private FenDessin fendessin;
 
     public Principal (){
-        this.controleur = new CreerPiece(this);
+        this.controleur = new Moniteur(this);
         
         this.Start = new FenDemarrage(this);
         
@@ -102,7 +102,7 @@ this.setRight(rightPane);
     public FenDessin getFenDessin_Bat(){return fendessin;}
     public FenDemarrage getFenDemarrage() {return Start;}
     public Etage getEtage() {return etage;}
-    public CreerPiece getCreerPiece() {return controleur;}
+    public Moniteur getCreerPiece() {return controleur;}
     public Batiment getBatiment() {return Batiment;}
     
     public void setEtage (Etage nv_etage){

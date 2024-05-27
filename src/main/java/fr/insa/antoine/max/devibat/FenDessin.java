@@ -13,7 +13,7 @@ import javafx.scene.canvas.Canvas;
 public class FenDessin extends MonCanvas {
     
     private Canvas c_Zone_Dessin;
-    private CreerPiece creerPiece;
+    private Moniteur creerPiece;
     
     public FenDessin(Principal main) {
         super(main);
